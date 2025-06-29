@@ -11,8 +11,14 @@ import random
 import string
 from datetime import datetime
 from cryptography.fernet import Fernet
+from realpass2 import*
+import subprocess
+import platform
+import sys
 
 current_winfo = ["Dashboard"]
+pass_style = ["AlphaNumeric"]
+pass_char = [True]
 
 class StaticColor:
     def __init__(self, btn, img):
@@ -70,6 +76,12 @@ class StaticColor:
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             settings_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
         
+class ScrollableFrame(ctk.CTkScrollableFrame):
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
+        self.configure(border_width=1, scrollbar_button_color="#1410DB", fg_color = "#F7F7FE",
+                       border_color = "black")
+
 
 def open_home():
     mainframe.pack_forget()
@@ -464,6 +476,152 @@ def insert_gen_pass():
     password = generate_password()
     password_entry.insert(0, password)  
 
+
+def customPassword():
+    global pass_style
+    if an_var.get():
+        a_var.set(0)
+        n_var.set(0)
+        pass_style.insert(0, 'AlphaNumeric')
+    elif a_var.get():
+        an_var.set(0)
+        n_var.set(0)
+        pass_style.insert(0, 'Alpha')
+    elif n_var.get():
+        an_var.set(0)
+        a_var.set(0)
+        pass_style.insert(0, 'Numeric')
+    else:
+        pass_style.insert(0, 'AlphaNumeric')
+
+def customChar():
+    global pass_char
+    if yes_var.get():
+        no_var.set(0)
+        pass_char.insert(0, True)
+    elif no_var.get():
+        yes_var.set(0)
+        pass_char.insert(0, False)
+    else:
+        pass_char.insert(0, True)
+def Generate_custom_password():
+    global pass_style, pass_char
+
+    numm = 3
+    
+    mod = mods.get()
+
+    if mods.get() == "Select":
+        mod = "Anime_Characters"
+    try:
+        minn = int(min_entry.get())
+        if int(min_entry.get())<6:
+            minn = 6
+        maxx = int(max_entry.get())
+        
+        if int(max_entry.get()) >25:
+            maxx = 25
+
+        if pass_style[0] == "Numeric":
+            numm = minn
+    except ValueError:
+        minn = 6
+        maxx = 25
+        if pass_style[0] == "Numeric":
+            numm = minn
+        messagebox.showinfo('Invalid Input', 'Invalid Min or Max input Random Custom Password is generated.')
+    
+    cstm_passwd = BasicSecurity(password_lenght_limit=(minn,maxx), style=(pass_style[0], numm), premods=mod,
+                                special_chars=pass_char[0])
+    cstmgenpass_dis.configure(state = NORMAL)
+    cstmgenpass_dis.delete(0, "end")
+    valuee = cstm_passwd.get_password()
+    if valuee is None:
+        messagebox.showerror('Length Error', "Try different minimum and maximum value or Mods")
+    else:
+        cstmgenpass_dis.insert(0, valuee)
+    cstmgenpass_dis.configure(state = "readonly")
+
+def add_pass_clear():
+    username_entry.delete(0, "end")
+    password_entry.delete(0, "end")
+    phone_entry.delete(0, "end")
+    email_entry.delete(0, "end")
+    url_entry.delete(0, "end")
+    username_entry.configure(placeholder_text="Username")
+    password_entry.configure(placeholder_text="Password")
+    phone_entry.configure(placeholder_text="Phone Number")
+    email_entry.configure(placeholder_text="Email")
+    url_entry.configure(placeholder_text="URL")
+
+def pass_save_back():
+    add_password_canvas.pack_forget()
+    password_canvas.pack(fill='both', expand=True)
+
+
+def get_wifi_credentials():
+    os_name = platform.system()
+    creds = []
+    try:
+        if os_name == "Windows":
+            out = subprocess.check_output(
+                ["netsh", "wlan", "show", "profiles"],
+                stderr=subprocess.STDOUT, encoding="utf-8"
+            )
+            ssids = [line.split(":")[1].strip() for line in out.splitlines() if "All User Profile" in line]
+            for ssid in ssids:
+                try:
+                    pwd_out = subprocess.check_output(
+                        ["netsh", "wlan", "show", "profile", ssid, "key=clear"],
+                        stderr=subprocess.STDOUT, encoding="utf-8"
+                    )
+                    pwd = next((ln.split(":")[1].strip() for ln in pwd_out.splitlines() if "Key Content" in ln), "N/A")
+                    creds.append((ssid, pwd))
+                except subprocess.CalledProcessError:
+                    creds.append((ssid, "N/A"))
+        elif os_name == "Darwin":
+            out = subprocess.check_output(
+                ["security", "find-generic-password", "-D", "AirPort network password", "-a", ""],
+                stderr=subprocess.DEVNULL, encoding="utf-8"
+            )
+            ssids = [ln.split('"')[1] for ln in out.splitlines() if "acct" in ln]
+            for ssid in ssids:
+                try:
+                    pwd = subprocess.check_output(
+                        ["security", "find-generic-password", "-D", "AirPort network password", "-a", ssid, "-w"],
+                        stderr=subprocess.STDOUT, encoding="utf-8"
+                    ).strip() or "N/A"
+                    creds.append((ssid, pwd))
+                except subprocess.CalledProcessError:
+                    creds.append((ssid, "N/A"))
+        elif os_name == "Linux":
+            out = subprocess.check_output(
+                ["nmcli", "-t", "-f", "NAME", "connection", "show"],
+                stderr=subprocess.STDOUT, encoding="utf-8"
+            )
+            ssids = out.strip().splitlines()
+            for ssid in ssids:
+                try:
+                    pwd_out = subprocess.check_output(
+                        ["nmcli", "-s", "-g", "802-11-wireless-security.psk", "connection", "show", ssid],
+                        stderr=subprocess.STDOUT, encoding="utf-8"
+                    )
+                    pwd = pwd_out.strip() or "N/A"
+                    creds.append((ssid, pwd))
+                except subprocess.CalledProcessError:
+                    creds.append((ssid, "N/A"))
+        else:
+            raise NotImplementedError(f"Unsupported OS: {os_name}")
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to fetch Wi‑Fi credentials:\n{e}")
+    return creds
+
+def copy_to_clipboard(text):
+    win.clipboard_clear()
+    win.clipboard_append(text)
+    messagebox.showinfo("Copied", f"Password copied to clipboard:\n{text}")
+
+
 win=Tk()
 win.geometry("800x500+150+110")
 win.title("Bazaro")
@@ -654,13 +812,13 @@ add_password_btn = ctk.CTkButton(add_password_canvas, text="Add Password", font=
 add_password_btn.place(x = 30, y = 277)
 
 clear_password_btn = ctk.CTkButton(add_password_canvas, text="Clear", font=("poppins", 15, 'bold'), 
-                                 fg_color="#1410DB", bg_color="#F7F7FE", height=35, cursor = "hand2",
-                                 width=70)
+                                 fg_color="#f34825", bg_color="#F7F7FE", height=35, cursor = "hand2",
+                                 width=70, command=add_pass_clear)
 clear_password_btn.place(x = 160, y = 277)
 
 back_password_btn = ctk.CTkButton(add_password_canvas, text="Back", font=("poppins", 15, 'bold'), 
-                                 fg_color="#1410DB", bg_color="#F7F7FE", height=35, cursor = "hand2",
-                                 width=70)
+                                 fg_color="#17ac00", bg_color="#F7F7FE", height=35, cursor = "hand2",
+                                 width=70, command=pass_save_back)
 back_password_btn.place(x = 245, y = 277)
 
 # --------------------------------------------------------------------------------------------------------------
@@ -673,14 +831,66 @@ show_all_password.pack(side = 'left', padx = 18)
 passgen_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 passgen_canvas.propagate(False)
 
-imagepath9=cwd+"\\Assets\\UIUX\\custompass2.png"
+imagepath9=cwd+"\\Assets\\UIUX\\custompass3.png"
 openphoto9=Image.open(imagepath9).resize((600,500))
 bgimage9=ImageTk.PhotoImage(openphoto9)
 passgen_canvas.create_image(300,250, image=bgimage9)
 
 
+min_entry = ctk.CTkEntry(passgen_canvas, font=("poppins", 12), placeholder_text="Min 6", fg_color="white", bg_color="white",
+                         text_color="black", border_width=1, corner_radius=5, border_color="black", 
+                         width=50, height=25)
+min_entry.place(x = 200, y = 187)
+
+max_entry = ctk.CTkEntry(passgen_canvas, font=("poppins", 12), placeholder_text="Max 25", fg_color="white", bg_color="white",
+                         text_color="black", border_width=1, corner_radius=5, border_color="black", 
+                         width=50, height=25)
+max_entry.place(x = 203, y = 215)
+an_var = IntVar()
+
+an_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha Numeric", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+                        command= customPassword, variable=an_var)
+an_cb.place(x =260, y = 187 )
+
+a_var = IntVar()
+a_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+                        command= customPassword, variable=a_var)
+a_cb.place(x =260, y = 210 )
+
+n_var = IntVar()
+n_cb = ctk.CTkCheckBox(passgen_canvas, text="Numeric", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+                        command= customPassword, variable=n_var)
+n_cb.place(x =260, y = 230 )
+
+yes_var = IntVar()
+spchar_cb_yes = ctk.CTkCheckBox(passgen_canvas, text="Yes", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+                        variable=yes_var, command=customChar)
+spchar_cb_yes.place(x =370, y = 187 )
+
+no_var = IntVar()
+spchar_cb_no = ctk.CTkCheckBox(passgen_canvas, text="No", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+                        variable=no_var, command=customChar)
+spchar_cb_no.place(x =370, y = 230 )
+
+value = ['Fruits','Flowers','Animals','Movies','Celebrities','Anime_Characters','Gaming_ID']
+mods = ctk.CTkOptionMenu(passgen_canvas, values=value, fg_color="#1410DB", text_color="white",
+                         height=25, width=100, bg_color="white")
+mods.place(relx = 0.46, rely = 0.565, anchor = 'center')
+mods.set("Select")
+
+cstmgenpass_dis = ctk.CTkEntry(passgen_canvas, font=("poppins",12), fg_color="white", bg_color="white",
+                               border_width=1, border_color='black', state=DISABLED)
+cstmgenpass_dis.place(relx = 0.65, rely = 0.65, anchor = 'center')
 
 
+gen_btn = ctk.CTkButton(passgen_canvas, text="Generate", font=("poppins", 12, "bold"), fg_color="#1410DB",
+                        bg_color="white", text_color="white", command=Generate_custom_password)
+gen_btn.place(relx = 0.5, rely = 0.75, anchor = "center")
 # --------------------------------------------------------------------------------------------------------------
 
 qr_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
@@ -701,6 +911,26 @@ openphoto12=Image.open(imagepath12).resize((600,500))
 bgimage12=ImageTk.PhotoImage(openphoto12)
 wifi_canvas.create_image(300,250, image=bgimage12)
 
+wifi_frame = ScrollableFrame(wifi_canvas, width=480, height=480)
+wifi_frame.pack(padx=10, pady=(70, 10), fill="both", expand=True)
+
+creds = get_wifi_credentials()
+
+if not creds:
+    ctk.CTkLabel(wifi_frame, text="No Wi‑Fi profiles found.", font=ctk.CTkFont("poppins",size=12, weight="bold"),fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB").pack(pady=20)
+else:
+    for ssid, pwd in creds:
+        row = ctk.CTkFrame(wifi_frame, corner_radius=5, fg_color="#F7F7FE", border_color="black", border_width=1)
+        row.pack(fill="x", pady=5)
+        label_ssid = ctk.CTkLabel(row, text=f"📶 {ssid}", font=ctk.CTkFont("poppins",size=12, weight="bold"),
+                                  fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB")
+        label_ssid.pack(side="left", padx=10, pady=8)
+        label_pwd = ctk.CTkLabel(row, text=f"{pwd}", font=ctk.CTkFont("poppins",size=12),
+                                 fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+        label_pwd.pack(side="left", padx=10)
+        btn = ctk.CTkButton(row, text="Copy", width=60, command=lambda p=pwd: copy_to_clipboard(p), font=("poppins", 12, "bold"),
+                            fg_color="#1410DB", text_color="white")
+        btn.pack(side="right", padx=10)
 # --------------------------------------------------------------------------------------------------------------
 
 
