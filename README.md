@@ -50,9 +50,26 @@ Whether you’re a privacy enthusiast or just tired of forgetting passwords, Vau
 
 ## Demo
 
+![Screenshot 1](https://github.com/user-attachments/assets/659c9e3e-1b70-479c-96ec-77f14a28dacc)
 
+![Screenshot 2](https://github.com/user-attachments/assets/dc602773-a085-4a6a-a701-c2aa633215a2)
+
+![Screenshot 3](https://github.com/user-attachments/assets/2e8a84c4-ec97-461a-8d98-7891a46427cd)
+
+![Screenshot 4](https://github.com/user-attachments/assets/695da839-e5b4-4c69-8e12-ff9b72d7f645)
+
+![Screenshot 5](https://github.com/user-attachments/assets/ba8fc76e-ae38-4a00-b347-f516a02ce61a)
+
+![Screenshot 6](https://github.com/user-attachments/assets/62b799e7-410f-4d22-966f-68b7d2cd94d2)
+
+![Screenshot 7](https://github.com/user-attachments/assets/6c34a67f-e128-4916-89f5-0a24867482aa)
+
+![Screenshot 8](https://github.com/user-attachments/assets/ce4b8a8c-4716-420a-be83-41f6cdfb7acd)
+
+![Screenshot 9](https://github.com/user-attachments/assets/353f0303-a89a-4d4b-a98b-f5046033dc20)
 
 ---
+
 
 ## Tech Stack
 
