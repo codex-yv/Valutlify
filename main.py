@@ -1371,7 +1371,7 @@ def save_credentials():
 
 win=Tk()
 win.geometry("800x500+150+110")
-win.title("Bazaro")
+win.title("Vaultify")
 win.minsize(800, 500)
 win.maxsize(800, 500)
 cwd = os.getcwd()
