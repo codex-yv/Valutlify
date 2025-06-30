@@ -1372,6 +1372,8 @@ def save_credentials():
 win=Tk()
 win.geometry("800x500+150+110")
 win.title("Bazaro")
+win.minsize(800, 500)
+win.maxsize(800, 500)
 cwd = os.getcwd()
 path_ico = os.path.join(cwd, "Assets", "logo.ico")
 win.iconbitmap(path_ico)
