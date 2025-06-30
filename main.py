@@ -42,28 +42,28 @@ class StaticColor:
         self.cwd = os.getcwd
 
         if self.prev_label == "Dashboard":
-            self.image_path = cwd+"\\Assets\\Buttons\\home1.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "home1.png") #cwd+"\\Assets\\Buttons\\home1.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             home_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
 
         elif self.prev_label == "Password":
 
-            self.image_path = cwd+"\\Assets\\Buttons\\password.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "password.png") #cwd+"\\Assets\\Buttons\\password.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             pass_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
 
         elif self.prev_label == "Generate":
 
-            self.image_path = cwd+"\\Assets\\Buttons\\seedbl.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "seedbl.png") #cwd+"\\Assets\\Buttons\\seedbl.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             passgen_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
         
         elif self.prev_label == "QR":
 
-            self.image_path = cwd+"\\Assets\\Buttons\\qrbl.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "qrbl.png") #cwd+"\\Assets\\Buttons\\qrbl.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             qr_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
@@ -71,14 +71,14 @@ class StaticColor:
 
         elif self.prev_label == "wifi":
 
-            self.image_path = cwd+"\\Assets\\Buttons\\wifibl.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "wifibl.png") #cwd+"\\Assets\\Buttons\\wifibl.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             wifi_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
         
         elif self.prev_label == "Settings":
 
-            self.image_path = cwd+"\\Assets\\Buttons\\settbl.png"
+            self.image_path = os.path.join(cwd, "Assets", "Buttons", "settbl.png") #cwd+"\\Assets\\Buttons\\settbl.png"
             self.image_pass1= Image.open(self.image_path).resize((24, 24))
             self.button_image1 = ctk.CTkImage(light_image=self.image_pass1,size=(24, 24))
             settings_btn.configure(text_color = "black", image = self.button_image1, fg_color = "white")
@@ -97,7 +97,7 @@ def open_home():
 def on_enter_home(e):
     global current_winfo
     if current_winfo[0] != "Dashboard":
-        image_path = cwd+"\\Assets\\Buttons\\home.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "home.png") #cwd+"\\Assets\\Buttons\\home.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         home_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -105,7 +105,7 @@ def on_enter_home(e):
 def on_leave_home(e):
     global current_winfo
     if current_winfo[0] != "Dashboard":
-        image_path = cwd+"\\Assets\\Buttons\\home1.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "home1.png") #cwd+"\\Assets\\Buttons\\home1.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         home_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -113,7 +113,7 @@ def on_leave_home(e):
 def on_enter_pass(e):
     global current_winfo
     if current_winfo[0] != "Password":
-        image_path = cwd+"\\Assets\\Buttons\\lock.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "lock.png") #cwd+"\\Assets\\Buttons\\lock.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass, size=(24, 24))
         pass_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -121,7 +121,7 @@ def on_enter_pass(e):
 def on_leave_pass(e):
     global current_winfo
     if current_winfo[0] != "Password":
-        image_path = cwd+"\\Assets\\Buttons\\password.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "password.png") #cwd+"\\Assets\\Buttons\\password.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         pass_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -129,7 +129,7 @@ def on_leave_pass(e):
 def on_enter_passgen(e):
     global current_winfo
     if current_winfo[0] != "Generate":
-        image_path = cwd+"\\Assets\\Buttons\\seedling.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "seedling.png") #cwd+"\\Assets\\Buttons\\seedling.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass, size=(24, 24))
         passgen_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -137,7 +137,7 @@ def on_enter_passgen(e):
 def on_leave_passgen(e):
     global current_winfo
     if current_winfo[0] != "Generate":
-        image_path = cwd+"\\Assets\\Buttons\\seedbl.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "seedbl.png") #cwd+"\\Assets\\Buttons\\seedbl.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         passgen_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -146,7 +146,7 @@ def on_leave_passgen(e):
 def on_enter_qr(e):
     global current_winfo
     if current_winfo[0] != "QR":
-        image_path = cwd+"\\Assets\\Buttons\\qr-code.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "qr-code.png") #cwd+"\\Assets\\Buttons\\qr-code.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass, size=(24, 24))
         qr_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -154,7 +154,7 @@ def on_enter_qr(e):
 def on_leave_qr(e):
     global current_winfo
     if current_winfo[0] != "QR":
-        image_path = cwd+"\\Assets\\Buttons\\qrbl.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "qrbl.png") #cwd+"\\Assets\\Buttons\\qrbl.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         qr_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -162,7 +162,7 @@ def on_leave_qr(e):
 def on_enter_wifi(e):
     global current_winfo
     if current_winfo[0] != "wifi":
-        image_path = cwd+"\\Assets\\Buttons\\wifi.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "wifi.png") #cwd+"\\Assets\\Buttons\\wifi.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass, size=(24, 24))
         wifi_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -170,7 +170,7 @@ def on_enter_wifi(e):
 def on_leave_wifi(e):
     global current_winfo
     if current_winfo[0] != "wifi":
-        image_path = cwd+"\\Assets\\Buttons\\wifibl.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "wifibl.png") #cwd+"\\Assets\\Buttons\\wifibl.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         wifi_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -178,7 +178,7 @@ def on_leave_wifi(e):
 def on_enter_settings(e):
     global current_winfo
     if current_winfo[0] != "Settings":
-        image_path = cwd+"\\Assets\\Buttons\\settings.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "settings.png") #cwd+"\\Assets\\Buttons\\settings.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass, size=(24, 24))
         settings_btn.configure(text_color = "White", image = button_image, fg_color = "#1410DB")
@@ -186,7 +186,7 @@ def on_enter_settings(e):
 def on_leave_settings(e):
     global current_winfo
     if current_winfo[0] != "Settings":
-        image_path = cwd+"\\Assets\\Buttons\\settbl.png"
+        image_path = os.path.join(cwd, "Assets", "Buttons", "settbl.png") #cwd+"\\Assets\\Buttons\\settbl.png"
         image_pass= Image.open(image_path).resize((24, 24))
         button_image = ctk.CTkImage(light_image=image_pass,size=(24, 24))
         settings_btn.configure(text_color = "Black", image = button_image, fg_color = "White")
@@ -206,7 +206,7 @@ def home_func():
     clear_scrollable_frame(password_frame)
     content_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\home.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "home.png") #cwd+"\\Assets\\Buttons\\home.png"
     static = StaticColor(home_btn, image_path)
     if current_winfo[0]!= "Dashboard":
         static.resetColor(current_winfo[0])
@@ -229,7 +229,7 @@ def pass_func():
 
     password_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\lock.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "lock.png") #cwd+"\\Assets\\Buttons\\lock.png"
     
     static = StaticColor(pass_btn, image_path)
 
@@ -251,7 +251,7 @@ def passgen_func():
     clear_scrollable_frame(password_frame)
     passgen_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\seedling.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "seedling.png") #cwd+"\\Assets\\Buttons\\seedling.png"
     
     static = StaticColor(passgen_btn, image_path)
 
@@ -274,7 +274,7 @@ def qr_func():
     clear_scrollable_frame(password_frame)
     qr_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\qr-code.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "qr-code.png") #cwd+"\\Assets\\Buttons\\qr-code.png"
     
     static = StaticColor(qr_btn, image_path)
 
@@ -304,7 +304,7 @@ def wifi_func():
     clear_scrollable_frame(password_frame)
     wifi_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\wifi.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "wifi.png") #cwd+"\\Assets\\Buttons\\wifi.png"
     
     static = StaticColor(wifi_btn, image_path)
 
@@ -329,7 +329,7 @@ def setting_func():
 
     settings_canvas.pack(fill='both', expand=True)
 
-    image_path = cwd+"\\Assets\\Buttons\\settings.png"
+    image_path = os.path.join(cwd, "Assets", "Buttons", "settings.png") #cwd+"\\Assets\\Buttons\\settings.png"
     
     static = StaticColor(settings_btn, image_path)
 
@@ -351,7 +351,7 @@ def fetch_credentials():
 
     # Query all rows from the 'credentials' table
     try:
-        cursor.execute("SELECT id, domain, password, strength, email, phone, key FROM credentials")
+        cursor.execute("SELECT id, domain, username, password, strength, email, phone, key FROM credentials")
         rows = cursor.fetchall()
 
         # Create a dictionary with decrypted passwords
@@ -359,11 +359,12 @@ def fetch_credentials():
         for row in rows:
             row_id = row[0]
             domain = row[1]
-            encrypted_password = row[2]
-            strength = row[3]
-            email = row[4]
-            phone = row[5]
-            key = row[6]
+            username = row[2]
+            encrypted_password = row[3]
+            strength = row[4]
+            email = row[5]
+            phone = row[6]
+            key = row[7]
 
             try:
                 cipher = Fernet(key)  # Convert string key to bytes
@@ -374,6 +375,7 @@ def fetch_credentials():
 
             credentials_dict[row_id] = {
                 "domain": domain,
+                "username": username,
                 "password": decrypted_password,
                 "strength": strength,
                 "email": email,
@@ -392,6 +394,185 @@ def Label_image(Image_path):
     pil_image = Image.open(Image_path)  # Replace with your image path
     ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(20, 20))
     return ctk_image
+
+
+def delete_cred(target_id):
+    try:
+        cwd = os.getcwd()
+        db_path = os.path.join(cwd, "Data", "credentials.db")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Execute delete statement
+        query = f"DELETE FROM credentials WHERE id = ?"
+        cursor.execute(query, (target_id,))
+        conn.commit()
+
+        messagebox.showinfo("Success", "Deleted Successfully!")
+        clear_scrollable_frame(password_frame)
+        show_all_pass()
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+    finally:
+        if conn:
+            conn.close()
+
+
+def update_cred(target_id):
+
+    def update_exit():
+        update_window.destroy()
+    
+    def upadte_clear():
+        update_username_entry.delete(0, "end")
+        update_password_entry.delete(0, "end")
+        update_phone_entry.delete(0, "end")
+        update_email_entry.delete(0, "end")
+        update_url_entry.delete(0, "end")
+        update_username_entry.configure(placeholder_text="Username")
+        update_password_entry.configure(placeholder_text="Password")
+        update_phone_entry.configure(placeholder_text="Phone Number")
+        update_email_entry.configure(placeholder_text="Email")
+        update_url_entry.configure(placeholder_text="URL")
+
+    def update_cred_win():
+        try:
+            cwd = os.getcwd()
+            db_path = os.path.join(cwd, "Data", "credentials.db")
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Update query
+            
+
+            if update_username_entry.get():
+                query1 = f"UPDATE credentials SET username = ? WHERE id = ?"
+                cursor.execute(query1, (update_username_entry.get().strip(), target_id))
+
+            if update_password_entry.get():
+
+                strength = password_strength(update_password_entry.get().strip())
+                key = Fernet.generate_key()
+                cipher = Fernet(key)
+                updt_password_value = update_password_entry.get().strip().encode()
+                password_encryp = cipher.encrypt(updt_password_value)
+
+                query6 = f"UPDATE credentials SET key = ? WHERE id = ?"
+                cursor.execute(query6, (key, target_id))
+
+                query7 = f"UPDATE credentials SET strength = ? WHERE id = ?"
+                cursor.execute(query7, (strength, target_id))
+
+                query2 = f"UPDATE credentials SET password = ? WHERE id = ?"
+                cursor.execute(query2, (password_encryp, target_id))
+                
+            if update_phone_entry.get():
+                query3 = f"UPDATE credentials SET phone = ? WHERE id = ?"
+                cursor.execute(query3, (update_phone_entry.get().strip(), target_id))
+
+            if update_email_entry.get():
+                validEmail = is_valid_email(update_email_entry.get().strip())
+                if validEmail is True:
+                    query4 = f"UPDATE credentials SET email = ? WHERE id = ?"
+                    cursor.execute(query4, (update_email_entry.get().strip(), target_id))
+                else:
+                    messagebox.showerror('Invalid Email', "Please Enter the correct email!")
+
+            if update_url_entry.get():
+                validURL = is_valid_url(update_url_entry.get().strip())
+                if validURL:
+                    query5 = f"UPDATE credentials SET url = ? WHERE id = ?"
+                    cursor.execute(query5, (update_url_entry.get().strip(), target_id))
+
+                    domain = get_platform_name(update_url_entry.get().strip())
+
+                    query8 = f"UPDATE credentials SET domain = ? WHERE id = ?"
+                    cursor.execute(query8, (domain, target_id))
+                else:
+                    messagebox.showerror('Invaid URL', 'Please Enter the valid url')
+
+            conn.commit()
+
+            messagebox.showinfo('Success', 'Credentials updated successfully!')
+            clear_scrollable_frame(password_frame)
+            show_all_pass()
+            update_dashboard()
+            clear_scrollable_frame(recent_password_frame)
+            show_all_pass_recent()
+
+        except sqlite3.Error as e:
+            messagebox.showerror('Updation Error', 'can not update the credentials.')
+        finally:
+            if conn:
+                conn.close()
+    update_window = Toplevel(win)
+    update_window.title("Update Credentials")
+    update_window.geometry("600x500")
+
+    update_frame = Frame(update_window, bg="green", width=600)
+    update_frame.propagate(False)
+    update_frame.pack(fill=Y, expand=True, side='left', anchor='nw')
+
+    update_password_canvas=Canvas(update_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
+    update_password_canvas.propagate(False)
+    update_password_canvas.pack(fill='both', expand=True)
+
+    imagepath13=os.path.join(cwd, "Assets", "UIUX", "passdisplay.png") #cwd+"\\Assets\\UIUX\\passdisplay.png"
+    openphoto13=Image.open(imagepath13).resize((600,500))
+    bgimage13=ImageTk.PhotoImage(openphoto13)
+    update_password_canvas.create_image(300,250, image=bgimage13)
+
+
+
+    update_username_entry = ctk.CTkEntry(update_password_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="Username",
+                                height=25)
+    update_username_entry.place(x = 30, y = 96)
+
+    update_password_entry = ctk.CTkEntry(update_password_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="Password",
+                                height=25)
+    update_password_entry.place(x = 230, y = 96)
+
+    update_gen_pass_btn = ctk.CTkButton(update_password_canvas, text="Generate", font=("poppins", 12), fg_color="#8E8DF1",
+                                bg_color="#F7F7FE", height=20, width=70, text_color='black', hover_color="#8E8DF1",
+                                cursor = "hand2", command=insert_gen_pass)
+    update_gen_pass_btn.place(x = 300, y = 130)
+
+
+    update_phone_entry = ctk.CTkEntry(update_password_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="Phone Number",
+                                height=25)
+    update_phone_entry.place(x = 430, y = 96)
+
+
+    update_email_entry = ctk.CTkEntry(update_password_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="Email",
+                                height=25, width=365)
+    update_email_entry.place(x = 30, y = 162)
+
+    update_url_entry = ctk.CTkEntry(update_password_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="URL",
+                                height=25, width=365)
+    update_url_entry.place(x = 30, y = 227)
+
+    update_password_btn = ctk.CTkButton(update_password_canvas, text="Update Credentials", font=("poppins", 15, 'bold'), 
+                                    fg_color="#1410DB", bg_color="#F7F7FE", height=35, cursor = "hand2",
+                                    width=110, command= update_cred_win)
+    update_password_btn.place(x = 30, y = 277)
+
+    update_clear_password_btn = ctk.CTkButton(update_password_canvas, text="Clear", font=("poppins", 15, 'bold'), 
+                                    fg_color="#f34825", bg_color="#F7F7FE", height=35, cursor = "hand2",
+                                    width=70, command=upadte_clear)
+    update_clear_password_btn.place(x = 190, y = 277)
+
+    update_exit_password_btn = ctk.CTkButton(update_password_canvas, text="Exit", font=("poppins", 15, 'bold'), 
+                                    fg_color="#17ac00", bg_color="#F7F7FE", height=35, cursor = "hand2",
+                                    width=70, command=update_exit)
+    update_exit_password_btn.place(x = 275, y = 277)
+
+    update_window.mainloop()
+    
 
 def show_all_pass():
     password_canvas.pack_forget()
@@ -412,53 +593,14 @@ def show_all_pass():
             imspath = os.path.join(cwd, "Assets","Labels", "globe.png")
             domain_img = Label_image(imspath)
 
-            domain_label = ctk.CTkLabel(row,image=domain_img ,text=f" {data['domain']}", compound='left', font=ctk.CTkFont("poppins", size=12, weight="bold"),
+            domain_label = ctk.CTkLabel(row,image=domain_img ,text=f" {data['domain']}, ID: {row_id}", compound='left', font=ctk.CTkFont("poppins", size=12, weight="bold"),
                                         fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB")
             domain_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-
-            # Password + Copy Button
-            imspath = os.path.join(cwd, "Assets","Labels", "keypass.png")
-            pwd_img = Label_image(imspath)
-
-            pwd_label = ctk.CTkLabel(row, image = pwd_img, text=f" {data['password']}", compound='left', font=ctk.CTkFont("poppins", size=12),
-                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
-            pwd_label.grid(row=1, column=0, padx=10, sticky="w", pady = 5)
-
-            pwd_copy = ctk.CTkButton(row, text="Copy Password", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
-                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
-            pwd_copy.grid(row=1, column=1, padx=5, pady = 5)
-
-            # Phone + Copy Button
-            imspath = os.path.join(cwd, "Assets","Labels", "phone.png")
-            phone_img = Label_image(imspath)
-
-            phone_label = ctk.CTkLabel(row,image=phone_img ,text=f" {data['phone']}", compound='left', font=ctk.CTkFont("poppins", size=12),
-                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
-            phone_label.grid(row=2, column=0, padx=10, sticky="w", pady = 5)
-
-            phone_copy = ctk.CTkButton(row, text="Copy Phone", width=100, command=lambda p=data['phone']: copy_to_clipboard(p),
-                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
-            phone_copy.grid(row=2, column=1, padx=5, pady = 5)
-
-            # Email + Copy Button
-
-            imspath = os.path.join(cwd, "Assets","Labels", "mail.png")
-            email_img = Label_image(imspath)
-            
-            email_label = ctk.CTkLabel(row,image=email_img ,text=f" {data['email']}", compound='left', font=ctk.CTkFont("poppins", size=12),
-                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
-            email_label.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="w")
-
-            email_copy = ctk.CTkButton(row, text="Copy Email", width=100, command=lambda e=data['email']: copy_to_clipboard(e),
-                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
-            email_copy.grid(row=3, column=1, padx=5, pady = 5)
-
-            # Strength indicator (no copy button)
 
             if data['strength'] == "Weak":
                 tc = "red"
             elif data['strength'] == "Medium":
-                tc = "yellow"
+                tc = "orange"
             elif data['strength'] == "Strong":
                 tc = "green"
             
@@ -467,7 +609,64 @@ def show_all_pass():
 
             strength_label = ctk.CTkLabel(row,image=strn_img ,text=f" Strength: {data['strength']}", compound='left', font=ctk.CTkFont("poppins", 12, "bold"),
                                         fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color=tc)
-            strength_label.grid(row=4, column=0, padx=10, pady=(0, 8), sticky="w")
+            strength_label.grid(row=0, column=1, padx=10, pady=(5, 5), sticky="w")
+
+            # username + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "user.png")
+            username_img = Label_image(imspath)
+
+            username_label = ctk.CTkLabel(row, image = username_img, text=f" {data['username']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            username_label.grid(row=1, column=0, padx=10, sticky="w", pady = 5)
+
+            username_copy = ctk.CTkButton(row, text="Copy usernmae", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            username_copy.grid(row=1, column=1, padx=5, pady = 5)
+
+            # Password + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "keypass.png")
+            pwd_img = Label_image(imspath)
+
+            pwd_label = ctk.CTkLabel(row, image = pwd_img, text=f" {data['password']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            pwd_label.grid(row=2, column=0, padx=10, sticky="w", pady = 5)
+
+            pwd_copy = ctk.CTkButton(row, text="Copy Password", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            pwd_copy.grid(row=2, column=1, padx=5, pady = 5)
+
+            # Phone + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "phone.png")
+            phone_img = Label_image(imspath)
+
+            phone_label = ctk.CTkLabel(row,image=phone_img ,text=f" {data['phone']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            phone_label.grid(row=3, column=0, padx=10, sticky="w", pady = 5)
+
+            phone_copy = ctk.CTkButton(row, text="Copy Phone", width=100, command=lambda p=data['phone']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            phone_copy.grid(row=3, column=1, padx=5, pady = 5)
+
+            # Email + Copy Button
+
+            imspath = os.path.join(cwd, "Assets","Labels", "mail.png")
+            email_img = Label_image(imspath)
+            
+            email_label = ctk.CTkLabel(row,image=email_img ,text=f" {data['email']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            email_label.grid(row=4, column=0, padx=10, pady=(0, 5), sticky="w")
+
+            email_copy = ctk.CTkButton(row, text="Copy Email", width=100, command=lambda e=data['email']: copy_to_clipboard(e),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            email_copy.grid(row=4, column=1, padx=5, pady = 5)
+
+            update_copy = ctk.CTkButton(row, text="Update", width=60, command=lambda e=row_id: update_cred(e),
+                                    font=("poppins", 14, "bold"), fg_color="green", text_color="white", height=25)
+            update_copy.grid(row=4, column=2, padx=5, pady = 5)
+
+            delete_copy = ctk.CTkButton(row, text="Delete", width=60, command=lambda e=row_id: delete_cred(e),
+                                    font=("poppins", 14, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            delete_copy.grid(row=4, column=3, padx=5, pady = 5)
 
 
 def clear_scrollable_frame(scrollable_frame):
@@ -533,6 +732,7 @@ def add_credential(domain, username, password, strength=None, phone=None, email=
     conn.commit()
     conn.close()
     update_dashboard()
+    show_all_pass_recent()
     messagebox.showinfo('Success', "Credentials added successfully.")
 
 def add_pass_db():
@@ -966,6 +1166,141 @@ def update_dashboard():
         if conn:
             conn.close()
 
+def fetch_credentials_resent():
+    # Connect to the SQLite database
+    cwd = os.getcwd()
+    db_path = os.path.join(cwd, "Data", "credentials.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Query all rows from the 'credentials' table
+    try:
+        cursor.execute("SELECT id, domain, username, password, strength, email, phone, key FROM credentials ORDER BY id DESC LIMIT 3")
+        rows = cursor.fetchall()
+
+        # Create a dictionary with decrypted passwords
+        credentials_dict = {}
+        for row in rows:
+            row_id = row[0]
+            domain = row[1]
+            username = row[2]
+            encrypted_password = row[3]
+            strength = row[4]
+            email = row[5]
+            phone = row[6]
+            key = row[7]
+
+            try:
+                cipher = Fernet(key)  # Convert string key to bytes
+                decrypted_password = cipher.decrypt(encrypted_password).decode()
+            except Exception as e:
+                print(f"Decryption failed for ID {row_id}: {e}")
+                decrypted_password = None
+
+            credentials_dict[row_id] = {
+                "domain": domain,
+                "username": username,
+                "password": decrypted_password,
+                "strength": strength,
+                "email": email,
+                "phone": phone,
+                "key": key
+            }
+
+        # Close the connection
+        conn.close()
+
+        return credentials_dict
+    except sqlite3.OperationalError:
+        messagebox.showinfo("Empty Password Data", "First add some password!")
+
+def show_all_pass_recent():
+    credentials_dict = fetch_credentials_resent()
+
+    if not credentials_dict:
+        ctk.CTkLabel(recent_password_frame, text="No credentials found.", 
+                    font=ctk.CTkFont("poppins", size=12, weight="bold"),
+                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB").pack(pady=20)
+    else:
+        for row_id, data in credentials_dict.items():
+            row = ctk.CTkFrame(recent_password_frame, corner_radius=5, fg_color="#F7F7FE", border_color="black", border_width=1)
+            row.pack(fill="x", pady=5, padx=5)
+
+            # Domain
+            cwd = os.getcwd()
+            imspath = os.path.join(cwd, "Assets","Labels", "globe.png")
+            domain_img = Label_image(imspath)
+
+            domain_label = ctk.CTkLabel(row,image=domain_img ,text=f" {data['domain']}, ID: {row_id}", compound='left', font=ctk.CTkFont("poppins", size=12, weight="bold"),
+                                        fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB")
+            domain_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+
+            if data['strength'] == "Weak":
+                tc = "red"
+            elif data['strength'] == "Medium":
+                tc = "yellow"
+            elif data['strength'] == "Strong":
+                tc = "green"
+            
+            imspath = os.path.join(cwd, "Assets","Labels", "shield.png")
+            strn_img = Label_image(imspath)
+
+            strength_label = ctk.CTkLabel(row,image=strn_img ,text=f" Strength: {data['strength']}", compound='left', font=ctk.CTkFont("poppins", 12, "bold"),
+                                        fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color=tc)
+            strength_label.grid(row=0, column=1, padx=10, pady=(5, 5), sticky="w")
+
+            # username + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "user.png")
+            username_img = Label_image(imspath)
+
+            username_label = ctk.CTkLabel(row, image = username_img, text=f" {data['username']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            username_label.grid(row=1, column=0, padx=10, sticky="w", pady = 5)
+
+            username_copy = ctk.CTkButton(row, text="Copy usernmae", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            username_copy.grid(row=1, column=1, padx=5, pady = 5)
+
+            # Password + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "keypass.png")
+            pwd_img = Label_image(imspath)
+
+            pwd_label = ctk.CTkLabel(row, image = pwd_img, text=f" {data['password']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            pwd_label.grid(row=2, column=0, padx=10, sticky="w", pady = 5)
+
+            pwd_copy = ctk.CTkButton(row, text="Copy Password", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            pwd_copy.grid(row=2, column=1, padx=5, pady = 5)
+
+            # Phone + Copy Button
+            imspath = os.path.join(cwd, "Assets","Labels", "phone.png")
+            phone_img = Label_image(imspath)
+
+            phone_label = ctk.CTkLabel(row,image=phone_img ,text=f" {data['phone']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            phone_label.grid(row=3, column=0, padx=10, sticky="w", pady = 5)
+
+            phone_copy = ctk.CTkButton(row, text="Copy Phone", width=100, command=lambda p=data['phone']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            phone_copy.grid(row=3, column=1, padx=5, pady = 5)
+
+            # Email + Copy Button
+
+            imspath = os.path.join(cwd, "Assets","Labels", "mail.png")
+            email_img = Label_image(imspath)
+            
+            email_label = ctk.CTkLabel(row,image=email_img ,text=f" {data['email']}", compound='left', font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            email_label.grid(row=4, column=0, padx=10, pady=(0, 5), sticky="w")
+
+            email_copy = ctk.CTkButton(row, text="Copy Email", width=100, command=lambda e=data['email']: copy_to_clipboard(e),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            email_copy.grid(row=4, column=1, padx=5, pady = 5)
+
+
+            
+
 win=Tk()
 win.geometry("800x500+150+110")
 win.title("Bazaro")
@@ -983,7 +1318,7 @@ stratup_canvas.pack()
 
 cwd = os.getcwd()
 
-imagepath=cwd+"\\Assets\\UIUX\\nologinentry.png"
+imagepath= os.path.join(cwd, "Assets", "UIUX", "nologinentry.png") #cwd+"\\Assets\\UIUX\\nologinentry.png"
 openphoto=Image.open(imagepath).resize((800,500))
 bgimage=ImageTk.PhotoImage(openphoto)
 stratup_canvas.create_image(400,250, image=bgimage)
@@ -1004,7 +1339,7 @@ content_frame = Frame(home_frame, bg="green", width=600)
 content_frame.propagate(False)
 content_frame.pack(fill=Y, expand=True, side='left', anchor='nw')
 # --------------------------------------------------------------------------------------------------------------
-image_path1 = cwd+"\\Assets\\Buttons\\home.png"
+image_path1 = os.path.join(cwd, "Assets", "Buttons", "home.png") #cwd+"\\Assets\\Buttons\\home.png"
 image_home = Image.open(image_path1).resize((24, 24))
 button_image1 = ctk.CTkImage(light_image=image_home,size=(24, 24))
 
@@ -1015,7 +1350,7 @@ home_btn.pack(pady=10, fill="x", padx=10)
 home_btn.bind("<Enter>", on_enter_home)
 home_btn.bind("<Leave>", on_leave_home)
 # --------------------------------------------------------------------------------------------------------------
-image_path2 = cwd+"\\Assets\\Buttons\\password.png"
+image_path2 = os.path.join(cwd, "Assets", "Buttons", "password.png") #cwd+"\\Assets\\Buttons\\password.png"
 image_pass= Image.open(image_path2).resize((24, 24))
 button_image2 = ctk.CTkImage(light_image=image_pass,size=(24, 24))
 
@@ -1028,7 +1363,7 @@ pass_btn.bind("<Enter>", on_enter_pass)
 pass_btn.bind("<Leave>", on_leave_pass)
 # --------------------------------------------------------------------------------------------------------------
 
-image_path3 = cwd+"\\Assets\\Buttons\\seedbl.png"
+image_path3 = os.path.join(cwd, "Assets", "Buttons", "seedbl.png") #cwd+"\\Assets\\Buttons\\seedbl.png"
 image_pass3= Image.open(image_path3).resize((24, 24))
 button_image3 = ctk.CTkImage(light_image=image_pass3,size=(24, 24))
 
@@ -1041,7 +1376,7 @@ passgen_btn.bind("<Enter>", on_enter_passgen)
 passgen_btn.bind("<Leave>", on_leave_passgen)
 # --------------------------------------------------------------------------------------------------------------
 
-image_path4 = cwd+"\\Assets\\Buttons\\qrbl.png"
+image_path4 = os.path.join(cwd, "Assets", "Buttons", "qrbl.png")  #cwd+"\\Assets\\Buttons\\qrbl.png"
 image_pass4= Image.open(image_path4).resize((24, 24))
 button_image4 = ctk.CTkImage(light_image=image_pass4,size=(24, 24))
 
@@ -1054,7 +1389,7 @@ qr_btn.bind("<Enter>", on_enter_qr)
 qr_btn.bind("<Leave>", on_leave_qr)
 # --------------------------------------------------------------------------------------------------------------
 
-image_path5 = cwd+"\\Assets\\Buttons\\wifibl.png"
+image_path5 =os.path.join(cwd, "Assets", "Buttons", "wifibl.png") #cwd+"\\Assets\\Buttons\\wifibl.png"
 image_pass5= Image.open(image_path5).resize((24, 24))
 button_image5 = ctk.CTkImage(light_image=image_pass5,size=(24, 24))
 
@@ -1067,7 +1402,7 @@ wifi_btn.bind("<Enter>", on_enter_wifi)
 wifi_btn.bind("<Leave>", on_leave_wifi)
 
 # --------------------------------------------------------------------------------------------------------------
-image_path6 = cwd+"\\Assets\\Buttons\\settbl.png"
+image_path6 = os.path.join(cwd, "Assets", "Buttons", "settbl.png") #cwd+"\\Assets\\Buttons\\settbl.png"
 image_pass6= Image.open(image_path6).resize((24, 24))
 button_image6 = ctk.CTkImage(light_image=image_pass6,size=(24, 24))
 
@@ -1084,7 +1419,7 @@ content_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief
 content_canvas.propagate(False)
 content_canvas.pack(fill='both', expand=True)
 
-imagepath7=cwd+"\\Assets\\UIUX\\dashboard.png"
+imagepath7=os.path.join(cwd, "Assets", "UIUX", "dashboard.png") #cwd+"\\Assets\\UIUX\\dashboard.png"
 openphoto7=Image.open(imagepath7).resize((600,500))
 bgimage7=ImageTk.PhotoImage(openphoto7)
 content_canvas.create_image(300,250, image=bgimage7)
@@ -1106,12 +1441,16 @@ total_strong_pass = ctk.CTkLabel(content_canvas, text="00", font=("poppins", 15,
                                 bg_color="white", text_color="green")
 total_strong_pass.place(x = 520, y = 115)
 update_dashboard()
+
+recent_password_frame = ScrollableFrame(content_canvas, width=480, height=200)
+recent_password_frame.pack(padx=10, pady=(235, 10), fill="both", expand=True)
+show_all_pass_recent()
 # --------------------------------------------------------------------------------------------------------------
 
 password_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 password_canvas.propagate(False)
 
-imagepath8=cwd+"\\Assets\\UIUX\\password_init.png"
+imagepath8=os.path.join(cwd, "Assets", "UIUX", "password_init.png") #cwd+"\\Assets\\UIUX\\password_init.png"
 openphoto8=Image.open(imagepath8).resize((600,500))
 bgimage8=ImageTk.PhotoImage(openphoto8)
 password_canvas.create_image(300,250, image=bgimage8)
@@ -1127,7 +1466,7 @@ add_password_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, r
 add_password_canvas.propagate(False)
 
 
-imagepath13=cwd+"\\Assets\\UIUX\\passdisplay.png"
+imagepath13=os.path.join(cwd, "Assets", "UIUX", "passdisplay.png") #cwd+"\\Assets\\UIUX\\passdisplay.png"
 openphoto13=Image.open(imagepath13).resize((600,500))
 bgimage13=ImageTk.PhotoImage(openphoto13)
 add_password_canvas.create_image(300,250, image=bgimage13)
@@ -1191,7 +1530,7 @@ show_all_password.pack(side = 'left', padx = 18)
 show_password_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 show_password_canvas.propagate(False)
 
-imagepath14=cwd+"\\Assets\\UIUX\\passwordss.png"
+imagepath14=os.path.join(cwd, "Assets", "UIUX", "passwordss.png") #cwd+"\\Assets\\UIUX\\passwordss.png"
 openphoto14=Image.open(imagepath14).resize((600,500))
 bgimage14=ImageTk.PhotoImage(openphoto14)
 show_password_canvas.create_image(300,250, image=bgimage14)
@@ -1204,7 +1543,7 @@ password_frame.pack(padx=10, pady=(70, 10), fill="both", expand=True)
 passgen_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 passgen_canvas.propagate(False)
 
-imagepath9=cwd+"\\Assets\\UIUX\\custompass3.png"
+imagepath9=os.path.join(cwd, "Assets", "UIUX", "custompass3.png") #cwd+"\\Assets\\UIUX\\custompass3.png"
 openphoto9=Image.open(imagepath9).resize((600,500))
 bgimage9=ImageTk.PhotoImage(openphoto9)
 passgen_canvas.create_image(300,250, image=bgimage9)
@@ -1269,7 +1608,7 @@ gen_btn.place(relx = 0.5, rely = 0.9, anchor = "center")
 qr_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 qr_canvas.propagate(False)
 
-imagepath10=cwd+"\\Assets\\UIUX\\qrqr.png"
+imagepath10=os.path.join(cwd, "Assets", "UIUX", "qrqr.png") #cwd+"\\Assets\\UIUX\\qrqr.png"
 openphoto10=Image.open(imagepath10).resize((600,500))
 bgimage10=ImageTk.PhotoImage(openphoto10)
 qr_canvas.create_image(300,250, image=bgimage10)
@@ -1297,7 +1636,7 @@ generate_qr.place(relx = 0.5, rely = 0.9, anchor = 'center')
 gen_qr_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 gen_qr_canvas.propagate(False)
 
-imagepath15=cwd+"\\Assets\\UIUX\\genqr.png"
+imagepath15=os.path.join(cwd, "Assets", "UIUX", "genqr.png") #cwd+"\\Assets\\UIUX\\genqr.png"
 openphoto15=Image.open(imagepath15).resize((600,500))
 bgimage15=ImageTk.PhotoImage(openphoto15)
 gen_qr_canvas.create_image(300,250, image=bgimage15)
@@ -1334,7 +1673,7 @@ qr_back.place(relx = 0.5, rely = 0.9, anchor = 'center')
 wifi_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 wifi_canvas.propagate(False)
 
-imagepath12=cwd+"\\Assets\\UIUX\\passwordss.png"
+imagepath12=os.path.join(cwd, "Assets", "UIUX", "passwordss.png") #cwd+"\\Assets\\UIUX\\passwordss.png"
 openphoto12=Image.open(imagepath12).resize((600,500))
 bgimage12=ImageTk.PhotoImage(openphoto12)
 wifi_canvas.create_image(300,250, image=bgimage12)
@@ -1365,7 +1704,7 @@ else:
 settings_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 settings_canvas.propagate(False)
 
-imagepath11=cwd+"\\Assets\\UIUX\\passwordss.png"
+imagepath11=os.path.join(cwd, "Assets", "UIUX", "passwordss.png") #cwd+"\\Assets\\UIUX\\passwordss.png"
 openphoto11=Image.open(imagepath11).resize((600,500))
 bgimage11=ImageTk.PhotoImage(openphoto11)
 settings_canvas.create_image(300,250, image=bgimage11)
