@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 from PIL import Image, ImageTk
 import os
 import customtkinter as ctk
@@ -19,6 +20,7 @@ from pyzbar.pyzbar import decode
 import time
 import cv2
 import threading
+import qrcode
 
 current_winfo = ["Dashboard"]
 pass_style = ["AlphaNumeric"]
@@ -199,6 +201,7 @@ def home_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     show_password_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
     content_canvas.pack(fill='both', expand=True)
@@ -219,6 +222,7 @@ def pass_func():
     qr_canvas.pack_forget()
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     add_password_canvas.pack_forget()
     show_password_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
@@ -242,6 +246,7 @@ def passgen_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     show_password_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
     passgen_canvas.pack(fill='both', expand=True)
@@ -263,6 +268,7 @@ def qr_func():
     passgen_canvas.pack_forget()
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     add_password_canvas.pack_forget()
     show_password_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
@@ -277,6 +283,14 @@ def qr_func():
 
     current_winfo.insert(0, "QR")
 
+def gen_qr_func():
+    qr_canvas.pack_forget()
+    gen_qr_canvas.pack(fill='both', expand=True)
+
+def gen_qr_back():
+    gen_qr_canvas.pack_forget()
+    qr_canvas.pack(fill='both', expand=True)
+
 def wifi_func():
     global current_winfo
     content_canvas.pack_forget()
@@ -286,6 +300,7 @@ def wifi_func():
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
     show_password_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
     wifi_canvas.pack(fill='both', expand=True)
 
@@ -308,6 +323,7 @@ def setting_func():
     qr_canvas.pack_forget()
     add_password_canvas.pack_forget()
     show_password_canvas.pack_forget()
+    gen_qr_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
     wifi_canvas.pack_forget()
 
@@ -372,6 +388,10 @@ def fetch_credentials():
     except sqlite3.OperationalError:
         messagebox.showinfo("Empty Password Data", "First add some password!")
 
+def Label_image(Image_path):
+    pil_image = Image.open(Image_path)  # Replace with your image path
+    ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(20, 20))
+    return ctk_image
 
 def show_all_pass():
     password_canvas.pack_forget()
@@ -388,12 +408,19 @@ def show_all_pass():
             row.pack(fill="x", pady=5, padx=5)
 
             # Domain
-            domain_label = ctk.CTkLabel(row, text=f"🌐 {data['domain']}", font=ctk.CTkFont("poppins", size=12, weight="bold"),
+            cwd = os.getcwd()
+            imspath = os.path.join(cwd, "Assets","Labels", "globe.png")
+            domain_img = Label_image(imspath)
+
+            domain_label = ctk.CTkLabel(row,image=domain_img ,text=f" {data['domain']}", compound='left', font=ctk.CTkFont("poppins", size=12, weight="bold"),
                                         fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB")
             domain_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 
             # Password + Copy Button
-            pwd_label = ctk.CTkLabel(row, text=f"🔑 {data['password']}", font=ctk.CTkFont("poppins", size=12),
+            imspath = os.path.join(cwd, "Assets","Labels", "keypass.png")
+            pwd_img = Label_image(imspath)
+
+            pwd_label = ctk.CTkLabel(row, image = pwd_img, text=f" {data['password']}", compound='left', font=ctk.CTkFont("poppins", size=12),
                                     fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
             pwd_label.grid(row=1, column=0, padx=10, sticky="w", pady = 5)
 
@@ -402,7 +429,10 @@ def show_all_pass():
             pwd_copy.grid(row=1, column=1, padx=5, pady = 5)
 
             # Phone + Copy Button
-            phone_label = ctk.CTkLabel(row, text=f"📞 {data['phone']}", font=ctk.CTkFont("poppins", size=12),
+            imspath = os.path.join(cwd, "Assets","Labels", "phone.png")
+            phone_img = Label_image(imspath)
+
+            phone_label = ctk.CTkLabel(row,image=phone_img ,text=f" {data['phone']}", compound='left', font=ctk.CTkFont("poppins", size=12),
                                     fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
             phone_label.grid(row=2, column=0, padx=10, sticky="w", pady = 5)
 
@@ -411,7 +441,11 @@ def show_all_pass():
             phone_copy.grid(row=2, column=1, padx=5, pady = 5)
 
             # Email + Copy Button
-            email_label = ctk.CTkLabel(row, text=f"📧 {data['email']}", font=ctk.CTkFont("poppins", size=12),
+
+            imspath = os.path.join(cwd, "Assets","Labels", "mail.png")
+            email_img = Label_image(imspath)
+            
+            email_label = ctk.CTkLabel(row,image=email_img ,text=f" {data['email']}", compound='left', font=ctk.CTkFont("poppins", size=12),
                                     fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
             email_label.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="w")
 
@@ -427,7 +461,11 @@ def show_all_pass():
                 tc = "yellow"
             elif data['strength'] == "Strong":
                 tc = "green"
-            strength_label = ctk.CTkLabel(row, text=f"🛡️ Strength: {data['strength']}", font=ctk.CTkFont("poppins", 12, "bold"),
+            
+            imspath = os.path.join(cwd, "Assets","Labels", "shield.png")
+            strn_img = Label_image(imspath)
+
+            strength_label = ctk.CTkLabel(row,image=strn_img ,text=f" Strength: {data['strength']}", compound='left', font=ctk.CTkFont("poppins", 12, "bold"),
                                         fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color=tc)
             strength_label.grid(row=4, column=0, padx=10, pady=(0, 8), sticky="w")
 
@@ -523,11 +561,11 @@ def add_pass_db():
 
     should_add = True
 
-    username_val = username_entry.get()
-    password_val = password_entry.get()
-    phone_val = phone_entry.get()
-    email_val = email_entry.get()
-    url_val = url_entry.get()
+    username_val = username_entry.get().strip()
+    password_val = password_entry.get().strip()
+    phone_val = phone_entry.get().strip()
+    email_val = email_entry.get().strip()
+    url_val = url_entry.get().strip()
 
     username_val = username_val if username_val else None
     password_val = password_val if password_val else None
@@ -855,6 +893,41 @@ def copyqr():
     global qr_content
     copy_to_clipboard(qr_content[0])
     
+def generate_qr_func():
+    # Get text from textbox
+    input_text = gen_qr_textbox.get("1.0", END).strip()
+    if not input_text:
+        messagebox.showerror("No-Input", "Give message to convert to QR")
+        return
+
+    # Generate QR Code
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4
+    )
+    qr.add_data(input_text)
+    qr.make(fit=True)
+
+    coloropt=["#641e16",'#512e5f','#4a235a','#154360','#1b4f72','#0b5345','#f1c40f','#f39c12','#F08080']
+    color=random.choice(coloropt)
+    qr_img = qr.make_image(fill_color=color, back_color="white")
+
+    # Save the image
+    save_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG Image", "*.png")])
+    if save_path:
+        qr_img.save(save_path)
+
+        # Display image
+        img = Image.open(save_path)
+        img = img.resize((200, 200))
+        img_tk = ImageTk.PhotoImage(img)
+        qr_img_label.configure(image=img_tk, text="")
+        qr_img_label.image = img_tk  # keep a reference!
+
+def clear_qr():
+    gen_qr_textbox.delete("1.0", END)
 
 win=Tk()
 win.geometry("800x500+150+110")
@@ -1086,58 +1159,58 @@ passgen_canvas.create_image(300,250, image=bgimage9)
 
 min_entry = ctk.CTkEntry(passgen_canvas, font=("poppins", 12), placeholder_text="Min 6", fg_color="white", bg_color="white",
                          text_color="black", border_width=1, corner_radius=5, border_color="black", 
-                         width=50, height=25)
-min_entry.place(x = 200, y = 187)
+                         width=80, height=25)
+min_entry.place(x = 140, y = 197)
 
 max_entry = ctk.CTkEntry(passgen_canvas, font=("poppins", 12), placeholder_text="Max 25", fg_color="white", bg_color="white",
                          text_color="black", border_width=1, corner_radius=5, border_color="black", 
-                         width=50, height=25)
-max_entry.place(x = 203, y = 215)
+                         width=80, height=25)
+max_entry.place(x = 140, y = 253)
 an_var = IntVar()
 
-an_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha Numeric", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
-                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+an_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha Numeric", font=('poppins', 14 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=24, checkbox_width=24,
                         command= customPassword, variable=an_var)
-an_cb.place(x =260, y = 187 )
+an_cb.place(x =240, y = 187 )
 
 a_var = IntVar()
-a_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
-                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+a_cb = ctk.CTkCheckBox(passgen_canvas, text="Alpha", font=('poppins', 14 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=24, checkbox_width=24,
                         command= customPassword, variable=a_var)
-a_cb.place(x =260, y = 210 )
+a_cb.place(x =240, y = 220 )
 
 n_var = IntVar()
-n_cb = ctk.CTkCheckBox(passgen_canvas, text="Numeric", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
-                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+n_cb = ctk.CTkCheckBox(passgen_canvas, text="Numeric", font=('poppins', 14 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=24, checkbox_width=24,
                         command= customPassword, variable=n_var)
-n_cb.place(x =260, y = 230 )
+n_cb.place(x =240, y = 250 )
 
 yes_var = IntVar()
-spchar_cb_yes = ctk.CTkCheckBox(passgen_canvas, text="Yes", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
-                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+spchar_cb_yes = ctk.CTkCheckBox(passgen_canvas, text="Yes", font=('poppins', 14 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=24, checkbox_width=24,
                         variable=yes_var, command=customChar)
-spchar_cb_yes.place(x =370, y = 187 )
+spchar_cb_yes.place(x =380, y = 187 )
 
 no_var = IntVar()
-spchar_cb_no = ctk.CTkCheckBox(passgen_canvas, text="No", font=('poppins', 12 ), fg_color="#1410DB", bg_color="white",
-                        text_color="black", checkmark_color="white", checkbox_height=15, checkbox_width=15,
+spchar_cb_no = ctk.CTkCheckBox(passgen_canvas, text="No", font=('poppins', 14 ), fg_color="#1410DB", bg_color="white",
+                        text_color="black", checkmark_color="white", checkbox_height=24, checkbox_width=24,
                         variable=no_var, command=customChar)
-spchar_cb_no.place(x =370, y = 230 )
+spchar_cb_no.place(x =380, y = 240 )
 
 value = ['Fruits','Flowers','Animals','Movies','Celebrities','Anime_Characters','Gaming_ID']
 mods = ctk.CTkOptionMenu(passgen_canvas, values=value, fg_color="#1410DB", text_color="white",
-                         height=25, width=100, bg_color="white")
-mods.place(relx = 0.46, rely = 0.565, anchor = 'center')
+                         height=30, width=150, bg_color="white")
+mods.place(relx = 0.46, rely = 0.675, anchor = 'center')
 mods.set("Select")
 
 cstmgenpass_dis = ctk.CTkEntry(passgen_canvas, font=("poppins",12), fg_color="white", bg_color="white",
                                border_width=1, border_color='black', state=DISABLED)
-cstmgenpass_dis.place(relx = 0.65, rely = 0.65, anchor = 'center')
+cstmgenpass_dis.place(relx = 0.65, rely = 0.785, anchor = 'center')
 
 
 gen_btn = ctk.CTkButton(passgen_canvas, text="Generate", font=("poppins", 12, "bold"), fg_color="#1410DB",
                         bg_color="white", text_color="white", command=Generate_custom_password)
-gen_btn.place(relx = 0.5, rely = 0.75, anchor = "center")
+gen_btn.place(relx = 0.5, rely = 0.9, anchor = "center")
 # --------------------------------------------------------------------------------------------------------------
 
 qr_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
@@ -1162,6 +1235,46 @@ copy_qr = ctk.CTkButton(qr_canvas,text="Copy QR-Code", bg_color="white", fg_colo
 
 copy_qr.place(relx = 0.6, rely = 0.7, anchor = 'center')
 
+generate_qr = ctk.CTkButton(qr_canvas,text="Generate QR-Code", bg_color="white", fg_color="white", font=("poppins", 12, "bold"),
+                            text_color="black", cursor = "hand2", width=100, border_color="black", border_width=1,
+                            command=gen_qr_func)
+
+generate_qr.place(relx = 0.5, rely = 0.9, anchor = 'center')
+
+gen_qr_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
+gen_qr_canvas.propagate(False)
+
+imagepath15=cwd+"\\Assets\\UIUX\\genqr.png"
+openphoto15=Image.open(imagepath15).resize((600,500))
+bgimage15=ImageTk.PhotoImage(openphoto15)
+gen_qr_canvas.create_image(300,250, image=bgimage15)
+
+qr_store_frame = ctk.CTkFrame(gen_qr_canvas, fg_color="white", bg_color="white", height=200,
+                              width=200, border_color="black", border_width=1)
+qr_store_frame.place(x = 40, y = 140)
+
+qr_img_label = Label(qr_store_frame)
+qr_img_label.pack(fill='both', expand=True)
+
+gen_qr_textbox = ctk.CTkTextbox(gen_qr_canvas, font=("poppins", 12), height=190, width=218, border_width=0, border_color="black",
+                            scrollbar_button_color="#1410DB")
+gen_qr_textbox.pack(pady = (137, 0), padx = (285, 0))
+
+gen_qr_btn = ctk.CTkButton(gen_qr_canvas,text="Generate QR-Code", bg_color="white", fg_color="#1410DB", font=("poppins", 12, "bold"),
+                            text_color="white", cursor = "hand2", command= generate_qr_func, width=100)
+
+gen_qr_btn.place(relx = 0.64, rely = 0.74, anchor = 'center')
+
+gen_clear_tb = ctk.CTkButton(gen_qr_canvas,text="Clear Textbox", bg_color="white", fg_color="green", font=("poppins", 12, "bold"),
+                            text_color="white", cursor = "hand2", width=100, command=clear_qr)
+
+gen_clear_tb.place(relx = 0.84, rely = 0.74, anchor = 'center')
+
+qr_back = ctk.CTkButton(gen_qr_canvas,text="Back", bg_color="white", fg_color="white", font=("poppins", 12, "bold"),
+                            text_color="black", cursor = "hand2", width=100, border_color="black", border_width=1,
+                            command=gen_qr_back)
+
+qr_back.place(relx = 0.5, rely = 0.9, anchor = 'center')
 
 # --------------------------------------------------------------------------------------------------------------
 
