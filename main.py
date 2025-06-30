@@ -199,6 +199,8 @@ def home_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
     content_canvas.pack(fill='both', expand=True)
 
     image_path = cwd+"\\Assets\\Buttons\\home.png"
@@ -218,6 +220,8 @@ def pass_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
 
     password_canvas.pack(fill='both', expand=True)
 
@@ -238,6 +242,8 @@ def passgen_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
     passgen_canvas.pack(fill='both', expand=True)
 
     image_path = cwd+"\\Assets\\Buttons\\seedling.png"
@@ -258,6 +264,8 @@ def qr_func():
     wifi_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
     qr_canvas.pack(fill='both', expand=True)
 
     image_path = cwd+"\\Assets\\Buttons\\qr-code.png"
@@ -277,6 +285,8 @@ def wifi_func():
     qr_canvas.pack_forget()
     settings_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
     wifi_canvas.pack(fill='both', expand=True)
 
     image_path = cwd+"\\Assets\\Buttons\\wifi.png"
@@ -297,6 +307,8 @@ def setting_func():
     passgen_canvas.pack_forget()
     qr_canvas.pack_forget()
     add_password_canvas.pack_forget()
+    show_password_canvas.pack_forget()
+    clear_scrollable_frame(password_frame)
     wifi_canvas.pack_forget()
 
     settings_canvas.pack(fill='both', expand=True)
@@ -313,6 +325,116 @@ def setting_func():
 def add_new_pass_canvas():
     password_canvas.pack_forget()
     add_password_canvas.pack(fill='both', expand=True)
+
+def fetch_credentials():
+    # Connect to the SQLite database
+    cwd = os.getcwd()
+    db_path = os.path.join(cwd, "Data", "credentials.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Query all rows from the 'credentials' table
+    try:
+        cursor.execute("SELECT id, domain, password, strength, email, phone, key FROM credentials")
+        rows = cursor.fetchall()
+
+        # Create a dictionary with decrypted passwords
+        credentials_dict = {}
+        for row in rows:
+            row_id = row[0]
+            domain = row[1]
+            encrypted_password = row[2]
+            strength = row[3]
+            email = row[4]
+            phone = row[5]
+            key = row[6]
+
+            try:
+                cipher = Fernet(key)  # Convert string key to bytes
+                decrypted_password = cipher.decrypt(encrypted_password).decode()
+            except Exception as e:
+                print(f"Decryption failed for ID {row_id}: {e}")
+                decrypted_password = None
+
+            credentials_dict[row_id] = {
+                "domain": domain,
+                "password": decrypted_password,
+                "strength": strength,
+                "email": email,
+                "phone": phone,
+                "key": key
+            }
+
+        # Close the connection
+        conn.close()
+
+        return credentials_dict
+    except sqlite3.OperationalError:
+        messagebox.showinfo("Empty Password Data", "First add some password!")
+
+
+def show_all_pass():
+    password_canvas.pack_forget()
+    show_password_canvas.pack(fill='both', expand=True)
+    credentials_dict = fetch_credentials()
+
+    if not credentials_dict:
+        ctk.CTkLabel(password_frame, text="No credentials found.", 
+                    font=ctk.CTkFont("poppins", size=12, weight="bold"),
+                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB").pack(pady=20)
+    else:
+        for row_id, data in credentials_dict.items():
+            row = ctk.CTkFrame(password_frame, corner_radius=5, fg_color="#F7F7FE", border_color="black", border_width=1)
+            row.pack(fill="x", pady=5, padx=5)
+
+            # Domain
+            domain_label = ctk.CTkLabel(row, text=f"🌐 {data['domain']}", font=ctk.CTkFont("poppins", size=12, weight="bold"),
+                                        fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color="#1410DB")
+            domain_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+
+            # Password + Copy Button
+            pwd_label = ctk.CTkLabel(row, text=f"🔑 {data['password']}", font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            pwd_label.grid(row=1, column=0, padx=10, sticky="w", pady = 5)
+
+            pwd_copy = ctk.CTkButton(row, text="Copy Password", width=100, command=lambda p=data['password']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            pwd_copy.grid(row=1, column=1, padx=5, pady = 5)
+
+            # Phone + Copy Button
+            phone_label = ctk.CTkLabel(row, text=f"📞 {data['phone']}", font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            phone_label.grid(row=2, column=0, padx=10, sticky="w", pady = 5)
+
+            phone_copy = ctk.CTkButton(row, text="Copy Phone", width=100, command=lambda p=data['phone']: copy_to_clipboard(p),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            phone_copy.grid(row=2, column=1, padx=5, pady = 5)
+
+            # Email + Copy Button
+            email_label = ctk.CTkLabel(row, text=f"📧 {data['email']}", font=ctk.CTkFont("poppins", size=12),
+                                    fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE")
+            email_label.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="w")
+
+            email_copy = ctk.CTkButton(row, text="Copy Email", width=100, command=lambda e=data['email']: copy_to_clipboard(e),
+                                    font=("poppins", 11, "bold"), fg_color="#1410DB", text_color="white", height=25)
+            email_copy.grid(row=3, column=1, padx=5, pady = 5)
+
+            # Strength indicator (no copy button)
+
+            if data['strength'] == "Weak":
+                tc = "red"
+            elif data['strength'] == "Medium":
+                tc = "yellow"
+            elif data['strength'] == "Strong":
+                tc = "green"
+            strength_label = ctk.CTkLabel(row, text=f"🛡️ Strength: {data['strength']}", font=ctk.CTkFont("poppins", 12, "bold"),
+                                        fg_color="#F7F7FE", corner_radius=20, bg_color="#F7F7FE", text_color=tc)
+            strength_label.grid(row=4, column=0, padx=10, pady=(0, 8), sticky="w")
+
+
+def clear_scrollable_frame(scrollable_frame):
+    for widget in scrollable_frame.winfo_children():
+        widget.destroy()
 
 def is_valid_email(email):
  
@@ -372,6 +494,7 @@ def add_credential(domain, username, password, strength=None, phone=None, email=
 
     conn.commit()
     conn.close()
+    messagebox.showinfo('Success', "Credentials added successfully.")
 
 def add_pass_db():
     cwd = os.getcwd()
@@ -934,9 +1057,22 @@ back_password_btn.place(x = 245, y = 277)
 
 # --------------------------------------------------------------------------------------------------------------
 
+
 show_all_password = ctk.CTkButton(password_canvas, text="Show all Passwords", font=("poppins", 15, 'bold'), 
-                                 fg_color="#1410DB", bg_color="white", text_color="white")
+                                 fg_color="#1410DB", bg_color="white", text_color="white", command= show_all_pass)
 show_all_password.pack(side = 'left', padx = 18)
+
+show_password_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
+show_password_canvas.propagate(False)
+
+imagepath14=cwd+"\\Assets\\UIUX\\passwordss.png"
+openphoto14=Image.open(imagepath14).resize((600,500))
+bgimage14=ImageTk.PhotoImage(openphoto14)
+show_password_canvas.create_image(300,250, image=bgimage14)
+
+password_frame = ScrollableFrame(show_password_canvas, width=480, height=480)
+password_frame.pack(padx=10, pady=(70, 10), fill="both", expand=True)
+
 # --------------------------------------------------------------------------------------------------------------
 
 passgen_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
