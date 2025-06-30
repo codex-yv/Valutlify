@@ -94,6 +94,33 @@ def open_home():
     mainframe.pack_forget()
     home_frame.pack(fill='both', expand=True)
 
+
+def open_home2():
+    cwd = os.getcwd()
+    db_path = os.path.join(cwd, "Data", "logs.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    
+
+    cursor.execute('SELECT username, password, key FROM users')
+    user_data = cursor.fetchall()  # Returns a list of tuples
+
+    # Close the connection
+    conn.close()
+
+    if username_entrys.get() == user_data[-1][0]:
+        key = user_data[-1][2]
+        encrypted_password = user_data[-1][1]
+        cipher = Fernet(key)  # Convert string key to bytes
+        decrypted_password = cipher.decrypt(encrypted_password).decode()
+        if password_entrys.get() == decrypted_password:
+            mainframe.pack_forget() 
+            home_frame.pack(fill='both', expand=True)
+        else:
+            messagebox.showerror("password", "Wrong Password!")    
+    else:
+        messagebox.showerror("Username", "Invalid Username!")
+
 def on_enter_home(e):
     global current_winfo
     if current_winfo[0] != "Dashboard":
@@ -1164,7 +1191,7 @@ def update_dashboard():
         total_strong_pass.configure(text = str(strong))
         
     except sqlite3.Error as e:
-        messagebox.showerror('Dashboard Update', "Can't update dashboard!")
+        error = e
     finally:
         if conn:
             conn.close()
@@ -1215,7 +1242,7 @@ def fetch_credentials_resent():
 
         return credentials_dict
     except sqlite3.OperationalError:
-        messagebox.showinfo("Empty Password Data", "First add some password!")
+        print("Empty Password Data First add some password!")
 
 def show_all_pass_recent():
     credentials_dict = fetch_credentials_resent()
@@ -1302,7 +1329,45 @@ def show_all_pass_recent():
             email_copy.grid(row=4, column=1, padx=5, pady = 5)
 
 
-            
+def save_credentials():
+    username = username_entry.get()
+    password = password_entry.get()
+
+    keys = Fernet.generate_key()
+    ciphers = Fernet(keys)
+    password_values = password.encode()
+    password_encryp = ciphers.encrypt(password_values)
+    if username and password:
+        cwd = os.getcwd()
+        db_path = os.path.join(cwd, "Data", "logs.db")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        # Create the table if it does not already exist
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                password TEXT NOT NULL,
+                key TEXT NOT NULL
+            )
+        ''')
+
+        # Insert data into the users table
+        cursor.execute('''
+            INSERT INTO users (username, password, key)
+            VALUES (?, ?, ?)
+        ''', (username, password_encryp, keys))
+
+        # Commit changes and close connection
+        conn.commit()
+        conn.close()
+        messagebox.showinfo("Logged In", "Account created succesfully!")
+
+        username_entry.delete(0, ctk.END)
+        password_entry.delete(0, ctk.END)
+    else:
+        messagebox.showinfo("Error", "Please enter both fields")           
 
 win=Tk()
 win.geometry("800x500+150+110")
@@ -1322,16 +1387,44 @@ stratup_canvas.propagate(False)
 stratup_canvas.pack()
 
 cwd = os.getcwd()
+db_path = os.path.join(cwd, "Data", "logs.db")
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+cursor.execute('SELECT COUNT(*) FROM users')
+row_counts = cursor.fetchone()[0]
+if row_counts == 0:
+    imagepath= os.path.join(cwd, "Assets", "UIUX", "nologinentry.png") #cwd+"\\Assets\\UIUX\\nologinentry.png"
+    openphoto=Image.open(imagepath).resize((800,500))
+    bgimage=ImageTk.PhotoImage(openphoto)
+    stratup_canvas.create_image(400,250, image=bgimage)
 
-imagepath= os.path.join(cwd, "Assets", "UIUX", "nologinentry.png") #cwd+"\\Assets\\UIUX\\nologinentry.png"
-openphoto=Image.open(imagepath).resize((800,500))
-bgimage=ImageTk.PhotoImage(openphoto)
-stratup_canvas.create_image(400,250, image=bgimage)
+    continue_button = ctk.CTkButton(stratup_canvas, text="Continue", font=("poppins", 15, 'bold'), bg_color="white",
+                                    fg_color="#1410DB", text_color="white", corner_radius=10, height=30, width=100,
+                                    command=open_home)
+    continue_button.place(relx = 0.5, rely = 0.6, anchor = 'center')
+else:
+    imagepath= os.path.join(cwd, "Assets", "UIUX", "signin.png") #cwd+"\\Assets\\UIUX\\nologinentry.png"
+    openphoto=Image.open(imagepath).resize((800,500))
+    bgimage=ImageTk.PhotoImage(openphoto)
+    stratup_canvas.create_image(400,250, image=bgimage)
 
-continue_button = ctk.CTkButton(stratup_canvas, text="Continue", font=("poppins", 15, 'bold'), bg_color="white",
-                                fg_color="#1410DB", text_color="white", corner_radius=10, height=30, width=100,
-                                command=open_home)
-continue_button.place(relx = 0.5, rely = 0.6, anchor = 'center')
+    username_entrys = ctk.CTkEntry(stratup_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                              text_color="black", border_width=0,placeholder_text="Username",
+                              height=25, width=160)
+    username_entrys.place(relx = 0.46, rely = 0.5, anchor = 'center')
+
+    password_entrys = ctk.CTkEntry(stratup_canvas, font=("poppins", 15), fg_color="white", bg_color="white",
+                                text_color="black", border_width=0,placeholder_text="Password",
+                                height=25, width=160)
+    password_entrys.place(relx = 0.46, rely = 0.63, anchor = 'center')
+
+    continue_button = ctk.CTkButton(stratup_canvas, text="Continue", font=("poppins", 15, 'bold'), bg_color="white",
+                                    fg_color="#1410DB", text_color="white", corner_radius=10, height=30, width=100,
+                                    command=open_home2)
+    continue_button.place(relx = 0.5, rely = 0.75, anchor = 'center')
+
+
+
 
 home_frame = Frame(win, bg="yellow")
 home_frame.propagate(False)
@@ -1709,11 +1802,27 @@ else:
 settings_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
 settings_canvas.propagate(False)
 
-imagepath11=os.path.join(cwd, "Assets", "UIUX", "passwordss.png") #cwd+"\\Assets\\UIUX\\passwordss.png"
+imagepath11=os.path.join(cwd, "Assets", "UIUX", "settingsdis.png") #cwd+"\\Assets\\UIUX\\passwordss.png"
 openphoto11=Image.open(imagepath11).resize((600,500))
 bgimage11=ImageTk.PhotoImage(openphoto11)
 settings_canvas.create_image(300,250, image=bgimage11)
 
+
+username_label = ctk.CTkLabel(settings_canvas, text="Username:", font=("poppins", 15, "bold"))
+username_label.place(x = 10, y = 120)
+username_entry = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Username" )
+username_entry.place(x = 100, y = 120)
+
+# Password label and entry
+password_label = ctk.CTkLabel(settings_canvas, text="Password:", font=("poppins", 15, "bold"))
+password_label.place(x = 10, y = 170)
+password_entry = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Password")
+password_entry.place(x = 100, y = 170)
+
+# Save button
+save_button = ctk.CTkButton(settings_canvas, text="Save", font=("poppins", 15, "bold"),fg_color="#1410DB",
+                            bg_color="white", text_color="white", command=save_credentials)
+save_button.place(x = 50, y = 220 )
 
 
 
