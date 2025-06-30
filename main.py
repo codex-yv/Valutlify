@@ -15,10 +15,15 @@ from realpass2 import*
 import subprocess
 import platform
 import sys
+from pyzbar.pyzbar import decode
+import time
+import cv2
+import threading
 
 current_winfo = ["Dashboard"]
 pass_style = ["AlphaNumeric"]
 pass_char = [True]
+qr_content = []
 
 class StaticColor:
     def __init__(self, btn, img):
@@ -619,8 +624,114 @@ def get_wifi_credentials():
 def copy_to_clipboard(text):
     win.clipboard_clear()
     win.clipboard_append(text)
-    messagebox.showinfo("Copied", f"Password copied to clipboard:\n{text}")
+    messagebox.showinfo("Copied", f"Content copied to clipboard:\n{text}")
 
+def qr_scanner():
+    global qr_content
+    try:
+        cam = cv2.VideoCapture(0)
+        if not cam.isOpened():
+            raise IOError("Cannot open webcam")
+    except Exception as e:
+        messagebox.showerror(f"Error initializing camera:", f"{e}")
+        exit(1)
+
+    # Set resolution with error handling
+    try:
+        cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    except Exception as e:
+        messagebox.showerror(f"Error setting camera resolution", f"{e}")
+    detected_qr_codes = set()
+    last_detection_time = {}
+
+    try:
+        while True:
+            try:
+                success, frame = cam.read()
+                if not success or frame is None:
+                    print("")
+                    messagebox.showerror(f"Failed to capture frame from camera. Retrying...", f"Try Again")
+                    time.sleep(0.5)
+                    continue
+
+                decoded_objects = decode(frame)
+                message_displayed = False
+
+                for obj in decoded_objects:
+                    try:
+                        qr_data = obj.data.decode("utf-8")
+                        qr_type = obj.type
+                    except Exception as e:
+         
+                        messagebox.showerror(f"Error decoding QR data", f"{e}")
+                        continue
+
+                    points = obj.polygon
+                    if len(points) > 4:
+                        try:
+                            hull = cv2.convexHull(points)
+                            hull = list(map(tuple, hull.reshape(-1, 2)))
+                        except Exception as e:
+                            messagebox.showerror(f"Error processing polygon hull", f"{e}")
+                            hull = points
+                    else:
+                        hull = points
+
+                    n = len(hull)
+                    for j in range(n):
+                        pt1 = tuple(map(int, hull[j]))
+                        pt2 = tuple(map(int, hull[(j + 1) % n]))
+                        cv2.line(frame, pt1, pt2, (0, 255, 0), 3)
+
+                    current_time = time.time()
+
+                    if qr_data in detected_qr_codes:
+                        last_seen = last_detection_time.get(qr_data, 0)
+                        if current_time - last_seen > 5:
+                            last_detection_time[qr_data] = current_time
+                            message_displayed = True
+                    else:
+                        qr_content = []
+                        qr_Data = f"Detected QR data: \n{qr_data}"
+                        qr_textbox.configure(state = NORMAL)
+                        qr_textbox.delete("1.0", "end")
+                        qr_textbox.insert("end", qr_Data)
+                        qr_textbox.configure(state = DISABLED)
+                        detected_qr_codes.add(qr_data)
+                        qr_content.insert(0, qr_data)
+                        last_detection_time[qr_data] = current_time
+
+                cv2.imshow("QR-Scanner (Press 'q' to exit)", frame)
+
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+            except Exception as e:
+                messagebox.showerror(f"Unexpected error during frame processing", f"{e}")
+                time.sleep(0.5)
+
+    except KeyboardInterrupt:
+        pass
+
+    finally:
+        try:
+            cam.release()
+        except Exception as e:
+            messagebox.showerror(f"Error releasing camera", f"{e}")
+
+        try:
+            cv2.destroyAllWindows()
+        except Exception as e:
+            messagebox.showerror(f"Error closing windows", f"{e}")
+
+def scanQR():
+    thread = threading.Thread(target=qr_scanner, daemon=True).start()
+
+def copyqr():
+    global qr_content
+    copy_to_clipboard(qr_content[0])
+    
 
 win=Tk()
 win.geometry("800x500+150+110")
@@ -900,6 +1011,21 @@ imagepath10=cwd+"\\Assets\\UIUX\\qrqr.png"
 openphoto10=Image.open(imagepath10).resize((600,500))
 bgimage10=ImageTk.PhotoImage(openphoto10)
 qr_canvas.create_image(300,250, image=bgimage10)
+
+qr_textbox = ctk.CTkTextbox(qr_canvas, font=("poppins", 12), height=190, width=218, border_width=0, border_color="black",
+                            scrollbar_button_color="#1410DB", state = DISABLED)
+qr_textbox.pack(pady = (125, 0))
+
+scan_qr_btn = ctk.CTkButton(qr_canvas,text="Scan QR-Code", bg_color="white", fg_color="#1410DB", font=("poppins", 12, "bold"),
+                            text_color="white", cursor = "hand2", command=scanQR, width=100)
+
+scan_qr_btn.place(relx = 0.4, rely = 0.7, anchor = 'center')
+
+copy_qr = ctk.CTkButton(qr_canvas,text="Copy QR-Code", bg_color="white", fg_color="green", font=("poppins", 12, "bold"),
+                            text_color="white", cursor = "hand2", width=100, command=copyqr)
+
+copy_qr.place(relx = 0.6, rely = 0.7, anchor = 'center')
+
 
 # --------------------------------------------------------------------------------------------------------------
 
