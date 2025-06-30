@@ -232,7 +232,8 @@ def home_func():
     show_password_canvas.pack_forget()
     clear_scrollable_frame(password_frame)
     content_canvas.pack(fill='both', expand=True)
-
+    clear_scrollable_frame(recent_password_frame)
+    show_all_pass_recent()
     image_path = os.path.join(cwd, "Assets", "Buttons", "home.png") #cwd+"\\Assets\\Buttons\\home.png"
     static = StaticColor(home_btn, image_path)
     if current_winfo[0]!= "Dashboard":
@@ -944,7 +945,7 @@ def add_pass_clear():
     password_entry.delete(0, "end")
     phone_entry.delete(0, "end")
     email_entry.delete(0, "end")
-    url_entry.delete(0, "end")
+    url_entry.delete(0, "end") 
     username_entry.configure(placeholder_text="Username")
     password_entry.configure(placeholder_text="Password")
     phone_entry.configure(placeholder_text="Phone Number")
@@ -1330,8 +1331,8 @@ def show_all_pass_recent():
 
 
 def save_credentials():
-    username = username_entry.get()
-    password = password_entry.get()
+    username = username_entry2.get()
+    password = password_entry2.get()
 
     keys = Fernet.generate_key()
     ciphers = Fernet(keys)
@@ -1812,14 +1813,14 @@ settings_canvas.create_image(300,250, image=bgimage11)
 
 username_label = ctk.CTkLabel(settings_canvas, text="Username:", font=("poppins", 15, "bold"))
 username_label.place(x = 10, y = 120)
-username_entry = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Username" )
-username_entry.place(x = 100, y = 120)
+username_entry2 = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Username" )
+username_entry2.place(x = 100, y = 120)
 
 # Password label and entry
 password_label = ctk.CTkLabel(settings_canvas, text="Password:", font=("poppins", 15, "bold"))
 password_label.place(x = 10, y = 170)
-password_entry = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Password")
-password_entry.place(x = 100, y = 170)
+password_entry2 = ctk.CTkEntry(settings_canvas, font=("poppins", 13), width=150, placeholder_text="Password")
+password_entry2.place(x = 100, y = 170)
 
 # Save button
 save_button = ctk.CTkButton(settings_canvas, text="Save", font=("poppins", 15, "bold"),fg_color="#1410DB",
