@@ -508,6 +508,9 @@ def update_cred(target_id):
     update_window = Toplevel(win)
     update_window.title("Update Credentials")
     update_window.geometry("600x500")
+    cwd = os.getcwd()
+    path_ico = os.path.join(cwd, "Assets", "logo.ico")
+    update_window.iconbitmap(path_ico)
 
     update_frame = Frame(update_window, bg="green", width=600)
     update_frame.propagate(False)
@@ -1304,7 +1307,9 @@ def show_all_pass_recent():
 win=Tk()
 win.geometry("800x500+150+110")
 win.title("Bazaro")
-# win.iconbitmap('logo.ico')
+cwd = os.getcwd()
+path_ico = os.path.join(cwd, "Assets", "logo.ico")
+win.iconbitmap(path_ico)
 
 
 mainframe=Frame(win,height=770,width=1400,bg='red')
@@ -1708,6 +1713,7 @@ imagepath11=os.path.join(cwd, "Assets", "UIUX", "passwordss.png") #cwd+"\\Assets
 openphoto11=Image.open(imagepath11).resize((600,500))
 bgimage11=ImageTk.PhotoImage(openphoto11)
 settings_canvas.create_image(300,250, image=bgimage11)
+
 
 
 

@@ -1,6 +1,0 @@
-password Generator
-encrypted data should be Saved in db
-easy clasification of password
-QR password Scanner
-QR password Generator
-Saved wifi password
