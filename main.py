@@ -532,6 +532,7 @@ def add_credential(domain, username, password, strength=None, phone=None, email=
 
     conn.commit()
     conn.close()
+    update_dashboard()
     messagebox.showinfo('Success', "Credentials added successfully.")
 
 def add_pass_db():
@@ -929,6 +930,42 @@ def generate_qr_func():
 def clear_qr():
     gen_qr_textbox.delete("1.0", END)
 
+
+def update_dashboard():
+    try:
+        cwd = os.getcwd()
+        db_path = os.path.join(cwd, "Data", "credentials.db")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        query = f"SELECT COUNT(*) FROM credentials"
+        cursor.execute(query)
+
+        row_count = cursor.fetchone()[0]
+
+        if row_count:
+            total_pass_label.configure(text = str(row_count))
+        else:
+            total_pass_label.configure(text = "00")
+
+        query = "SELECT strength FROM credentials"
+        cursor.execute(query)
+
+        values = [row[0] for row in cursor.fetchall()]
+
+        weak = values.count("Weak")
+        mid = values.count("Medium")
+        strong = values.count("Strong")
+
+        total_weak_pass.configure(text = str(weak))
+        total_mid_pass.configure(text = str(mid))
+        total_strong_pass.configure(text = str(strong))
+        
+    except sqlite3.Error as e:
+        messagebox.showerror('Dashboard Update', "Can't update dashboard!")
+    finally:
+        if conn:
+            conn.close()
+
 win=Tk()
 win.geometry("800x500+150+110")
 win.title("Bazaro")
@@ -1053,6 +1090,22 @@ bgimage7=ImageTk.PhotoImage(openphoto7)
 content_canvas.create_image(300,250, image=bgimage7)
 
 
+total_pass_label = ctk.CTkLabel(content_canvas, text="00", font=("poppins", 15, "bold"), width=30, fg_color="white",
+                                bg_color="white", text_color="black")
+total_pass_label.place(x = 520, y = 35)
+
+total_weak_pass = ctk.CTkLabel(content_canvas, text="00", font=("poppins", 15, "bold"), width=30, fg_color="white",
+                                bg_color="white", text_color="red")
+total_weak_pass.place(x = 520, y = 60)
+
+total_mid_pass = ctk.CTkLabel(content_canvas, text="00", font=("poppins", 15, "bold"), width=30, fg_color="white",
+                                bg_color="white", text_color="orange")
+total_mid_pass.place(x = 520, y = 87)
+
+total_strong_pass = ctk.CTkLabel(content_canvas, text="00", font=("poppins", 15, "bold"), width=30, fg_color="white",
+                                bg_color="white", text_color="green")
+total_strong_pass.place(x = 520, y = 115)
+update_dashboard()
 # --------------------------------------------------------------------------------------------------------------
 
 password_canvas=Canvas(content_frame,bg='white',bd=0,highlightthickness=0, relief='ridge')
