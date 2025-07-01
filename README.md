@@ -50,25 +50,24 @@ Whether you’re a privacy enthusiast or just tired of forgetting passwords, Vau
 
 ## Demo
 
-![Screenshot 1](https://github.com/user-attachments/assets/659c9e3e-1b70-479c-96ec-77f14a28dacc)
+![Screenshot 2025-07-01 071901](https://github.com/user-attachments/assets/1377de2f-8ce9-4c4b-b629-9497b46501c7)
 
-![Screenshot 2](https://github.com/user-attachments/assets/dc602773-a085-4a6a-a701-c2aa633215a2)
+![Screenshot 2025-07-01 071923](https://github.com/user-attachments/assets/89376e9d-5e80-4668-99b5-76f64cca0d2e)
 
-![Screenshot 3](https://github.com/user-attachments/assets/2e8a84c4-ec97-461a-8d98-7891a46427cd)
+![Screenshot 2025-07-01 071943](https://github.com/user-attachments/assets/0e1c803f-c7f5-4e2b-96ce-87ab3ecd5133)
 
-![Screenshot 4](https://github.com/user-attachments/assets/695da839-e5b4-4c69-8e12-ff9b72d7f645)
+![Screenshot 2025-07-01 071955](https://github.com/user-attachments/assets/eb667cc2-3b28-491b-91db-28521bc7a26f)
 
-![Screenshot 5](https://github.com/user-attachments/assets/ba8fc76e-ae38-4a00-b347-f516a02ce61a)
+![Screenshot 2025-07-01 072008](https://github.com/user-attachments/assets/60967003-d8c8-44c5-9c22-0470b56a0499)
 
-![Screenshot 6](https://github.com/user-attachments/assets/62b799e7-410f-4d22-966f-68b7d2cd94d2)
+![Screenshot 2025-07-01 072022](https://github.com/user-attachments/assets/e24e38ff-188c-422a-b814-0803081b37bf)
 
-![Screenshot 7](https://github.com/user-attachments/assets/6c34a67f-e128-4916-89f5-0a24867482aa)
+![Screenshot 2025-07-01 072038](https://github.com/user-attachments/assets/05f1df63-d83b-4df3-96e5-dbeee067043b)
 
-![Screenshot 8](https://github.com/user-attachments/assets/ce4b8a8c-4716-420a-be83-41f6cdfb7acd)
-
-![Screenshot 9](https://github.com/user-attachments/assets/353f0303-a89a-4d4b-a98b-f5046033dc20)
+![Screenshot 2025-07-01 072052](https://github.com/user-attachments/assets/24c04f6f-215e-4ed6-bfee-58cd2eb670a4)
 
 ---
+
 
 
 ## Tech Stack
